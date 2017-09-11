@@ -4,6 +4,7 @@ SELECT
   date,
   MAX(IF(hits.eventInfo.eventAction = 'youtube', 1,0)) AS youtubeCheck,
   # counts as unique events
+  # query for total events - ecommerce impressions
   SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce') AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   # SUM(IF(hits.eventInfo.eventCategory LIKE '%ecommerce%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   MAX(IF(hits.eventInfo.eventCategory = 'ecommerce' AND hits.eventInfo.eventAction = 'impression', 1,0)) AS ecommerceImpressionCheck,
@@ -13,6 +14,7 @@ SELECT
   MAX(IF(totals.transactions IS NULL, 0,1)) AS transCheck,
  FROM
   TABLE_DATE_RANGE([125557395.ga_sessions_], TIMESTAMP('20170210'), TIMESTAMP('20170211')) as Table1
+  # don't group by visitor or session id if it's date-specific
  GROUP BY
   date,
   vid,
