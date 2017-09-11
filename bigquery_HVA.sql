@@ -14,6 +14,8 @@ SELECT
   MAX(IF(hits.eventInfo.eventCategory = 'ecommerce' AND hits.eventInfo.eventAction = 'impression', 1,0)) AS ecommerceImpressionCheck,
   # search check: whether the session has flight search or not
   MAX(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)($|\?)'),1,0)) AS flightSearchCheck,
+  # query for total flight searches 
+  SUM(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)($|\?)'),1,0)) AS flightSearches,
   # trans check: whether the session has transaction or not
   MAX(IF(totals.transactions IS NULL, 0,1)) AS transCheck,
   # query tables by date range
