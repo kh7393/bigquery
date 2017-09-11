@@ -52,5 +52,3 @@ HAVING
   searches = 'syd'
 LIMIT 100
 
-SELECT count(hits.eventInfo.eventCategory) FROM TABLE_DATE_RANGE([125557395.ga_sessions_], TIMESTAMP('20170210'), TIMESTAMP('20170211')) 
-  WHERE hits.eventInfo.eventCategory = 'ecommerce' AND hits.eventInfo.eventAction = 'impression' AS ecommerceImpressionEvents
