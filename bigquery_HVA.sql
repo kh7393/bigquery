@@ -5,30 +5,31 @@ SELECT
   date,
   # query for hits with custom dimension - storefront
   SUM(IF(hits.customDimensions.index = 69, 1,0)) AS storefrontDimension,
-  # query whether the session has a storefront check or not
+  # query for no. of sessions with storefront check
   MAX(IF(hits.customDimensions.index = 69, 1,0)) AS storefrontCheck,
   # query for total events - youtube
   SUM(IF(hits.eventInfo.eventCategory = 'youtube', 1,0)) AS youtubeEvents,
-  # query whether the hit has youtube event or not [unique event]
+  # query for no. of sessions with youtube events
   MAX(IF(hits.eventInfo.eventCategory = 'youtube', 1,0)) AS youtubeCheck,
   # counts as unique events
   # query for total events - ecommerce impressions
   SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce') AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   # SUM(IF(hits.eventInfo.eventCategory LIKE '%ecommerce%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
-  # query whether the hit has ecommerce impression event or not [unique event]
+  # query for no. of sessions with ecommerce impressions
   MAX(IF(hits.eventInfo.eventCategory = 'ecommerce' AND hits.eventInfo.eventAction = 'impression', 1,0)) AS ecommerceImpressionCheck,
   # https://github.com/sparklineanalytics/analysts/blob/master/AirNZ/GUID%20Roll%20Up%20Analysis/base_table.sql
-  # search check: whether the hit has flight search or not
-  MAX(IF(REGEXP_MATCH(hits.page.pagePath,r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)') and hits.type = 'PAGE'),1,0)) AS flightSearchCheck,
+  # query for no. of sessions with flight search
+  MAX(IF(REGEXP_MATCH(hits.page.pagePath,r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)') and hits.type = 'PAGE',1,0)) AS flightSearchCheck,
   # query for total flight searches 
-  SUM(IF(REGEXP_MATCH(hits.page.pagePath,r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)') and hits.type = 'PAGE'),1,0)) AS flightSearches,
-  # trans check: whether the hit has transaction or not
+  SUM(IF(REGEXP_MATCH(hits.page.pagePath,r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)') and hits.type = 'PAGE',1,0)) AS flightSearches,
+  # query for no. of sessions with flight bookings
   MAX(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(mobi/|)bookingconfirmation') AND hits.type = 'PAGE', 0,1)) AS flightbookingCheck,
-  SUM(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(mobi/|)bookingconfirmation') AND hits.type = 'PAGE', 0,1)) AS flightbookingCheck
+  SUM(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(mobi/|)bookingconfirmation') AND hits.type = 'PAGE', 0,1)) AS flightbookings
     # query tables by date range
  FROM
   TABLE_DATE_RANGE([125557395.ga_sessions_], TIMESTAMP('20170210'), TIMESTAMP('20170211')) as Table1
-  WHERE
+  # provides the no. of sessions in GA. Remove this criteria to find # of hits (non-check)/ number of unique events (checks)
+ WHERE
   totals.visits IS NOT NULL
   # don't group by visitor or session id if it's date-specific
  GROUP BY
