@@ -4,8 +4,8 @@ SELECT
   date,
   MAX(IF(hits.eventInfo.eventAction = 'youtube', 1,0)) AS youtubeCheck,
   # counts as unique events
-  # SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce' AND hits.eventInfo.eventAction = 'impression'), 1, 0)) as EcommerceImpressionEvents,
-  SUM(IF(hits.eventInfo.eventCategory LIKE '%Basket%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
+  SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce') AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
+  # SUM(IF(hits.eventInfo.eventCategory LIKE '%Basket%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   MAX(IF(hits.eventInfo.eventCategory = 'ecommerce' AND hits.eventInfo.eventAction = 'impression', 1,0)) AS ecommerceImpressionCheck,
   # search check: whether the session has flight search or not
   MAX(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)($|\?)'),1,0)) AS flightSearchCheck,
