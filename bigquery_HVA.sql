@@ -35,8 +35,34 @@ CASE
       WHEN REGEXP_MATCH(hits.page.hostname, r'(www|flightbookings|m|hotels)\.(airnewzealand|airnz)\.com$') THEN 'US'
       ELSE NULL END AS storefront,
 
-
+  # query for total hits - searched origin city
   SUM(IF(hits.customDimensions.index = 11, 1,0)) AS SearchedOriginCity,
+  # query for total hits - searched origin country
+  SUM(IF(hits.customDimensions.index = 12, 1,0)) AS SearchedOriginCountry,
+  # query for total hits - searched destination city
+  SUM(IF(hits.customDimensions.index = 13, 1,0)) AS SearchedDestinationCity,
+  # query for total hits - Searched Destination Country
+  SUM(IF(hits.customDimensions.index = 14, 1,0)) AS SearchedDestinationCountry,
+  # query for total hits - Searched Journey Start Date
+  SUM(IF(hits.customDimensions.index = 15, 1,0)) AS SearchedJourneyStartDate,
+  # query for total hits - Searched Journey End Date
+  SUM(IF(hits.customDimensions.index = 16, 1,0)) AS SearchedJourneyEndDate,
+  # query for total hits - Searched Journey Lead Days
+  SUM(IF(hits.customDimensions.index = 17, 1,0)) AS SearchedJourneyLeadDays,
+  # query for total hits - Searched Journey Type
+  SUM(IF(hits.customDimensions.index = 18, 1,0)) AS SearchedJourneyType,
+  # query for total hits - Searched Number of Passengers
+  SUM(IF(hits.customDimensions.index = 19, 1,0)) AS SearchedNumberofPassengers,
+  # query for total hits - Searched Number of Adults
+  SUM(IF(hits.customDimensions.index = 20, 1,0)) AS SearchedNumberofAdults,
+  # query for total hits - Searched Number of Children
+  SUM(IF(hits.customDimensions.index = 21, 1,0)) AS SearchedNumberofChildren,
+  # query for total hits - Searched Number of Infants
+  SUM(IF(hits.customDimensions.index = 22, 1,0)) AS SearchedNumberofInfants,
+  # query for total hits - Searched Trip Duration
+  SUM(IF(hits.customDimensions.index = 23, 1,0)) AS SearchedTripDuration,
+  # query for total hits - Searched Service Class
+  SUM(IF(hits.customDimensions.index = 24, 1,0)) AS SearchedServiceClass,
   # query for total events - youtube
   SUM(IF(hits.eventInfo.eventCategory = 'youtube', 1,0)) AS youtubeEvents,
   # query for total events - chatbot
