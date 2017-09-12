@@ -35,6 +35,8 @@ CASE
       WHEN REGEXP_MATCH(hits.page.hostname, r'(www|flightbookings|m|hotels)\.(airnewzealand|airnz)\.com$') THEN 'US'
       ELSE NULL END AS storefront,
 
+
+  SUM(IF(hits.customDimensions.index = 11, 1,0)) AS SearchedOriginCity,
   # query for total events - youtube
   SUM(IF(hits.eventInfo.eventCategory = 'youtube', 1,0)) AS youtubeEvents,
   # query for total events - chatbot
@@ -57,17 +59,18 @@ CASE
   SUM(IF(hits.eventInfo.eventCategory = 'loyalty', 1,0)) AS loyaltyEvents, 
    # query for total events - video
   SUM(IF(hits.eventInfo.eventCategory = 'video', 1,0)) AS videoEvents, 
-   # query for total events - NebulaCX
+   # query for total ev
+    ents - NebulaCX
   SUM(IF(hits.eventInfo.eventCategory = 'NebulaCX', 1,0)) AS NebulaCXEvents,
   
   # query for total events - ecommerce impressions
   SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce') AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   # SUM(IF(hits.eventInfo.eventCategory LIKE '%ecommerce%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   # https://github.com/sparklineanalytics/analysts/blob/master/AirNZ/GUID%20Roll%20Up%20Analysis/base_table.sql
-  # query for total flight searches 
+  # query for total flight searches. if criteria AND hitstype = page, provides pageviews
   SUM(IF(REGEXP_MATCH(hits.page.pagePath,r'/vbook/actions/(selectflights|selectitinerary|(mobi/|)createitinerary)') and hits.type = 'PAGE',1,0)) AS flightSearches,
-  # query for total flight bookings
-  SUM(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(mobi/|)bookingconfirmation') AND hits.type = 'PAGE', 0,1)) AS flightbookings
+  # query for total flight bookings. if criteria AND hitstype = page, provides pageviews
+  SUM(IF(REGEXP_MATCH(hits.page.pagePath, r'/vbook/actions/(mobi/|)bookingconfirmation') AND hits.type = 'PAGE', 1,0)) AS flightbookings
     # query tables by date range
  FROM
   TABLE_DATE_RANGE([125557395.ga_sessions_], TIMESTAMP('20170210'), TIMESTAMP('20170211')) as Table1
