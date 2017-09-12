@@ -43,6 +43,23 @@ CASE
   SUM(IF(hits.eventInfo.eventCategory = 'mast head main' OR hits.eventInfo.eventCategory = 'mast head level 2' OR hits.eventInfo.eventCategory = 'mast head level 3', 1,0)) AS mastheadEvents,
   # query for total events - cta buttons 
   SUM(IF(hits.eventInfo.eventCategory = 'cta button' OR hits.eventInfo.eventCategory = 'CTA BUTTON' OR hits.eventInfo.eventCategory = 'cta buttons', 1,0)) AS CTAEvents,
+  # query for total events - 100% scroll depth
+  SUM(IF(hits.eventInfo.eventCategory = 'Scroll Depth' AND hits.eventInfo.eventLabel = '100%', 1,0)) AS ScrollDepth50Events,
+  # query for total events - 75% scroll depth
+  SUM(IF(hits.eventInfo.eventCategory = 'Scroll Depth' AND hits.eventInfo.eventLabel = '75%', 1,0)) AS ScrollDepth50Events,
+  # query for total events - 25% scroll depth
+  SUM(IF(hits.eventInfo.eventCategory = 'Scroll Depth' AND hits.eventInfo.eventLabel = '25%', 1,0)) AS ScrollDepth50Events,
+  # query for total events - 50% scroll depth
+  SUM(IF(hits.eventInfo.eventCategory = 'Scroll Depth' AND hits.eventInfo.eventLabel = '50%', 1,0)) AS ScrollDepth50Events,
+  # query for total events - footer menu
+  SUM(IF(hits.eventInfo.eventCategory = 'footer menu', 1,0)) AS footermenuEvents, 
+  # query for total events - loyalty
+  SUM(IF(hits.eventInfo.eventCategory = 'loyalty', 1,0)) AS loyaltyEvents, 
+   # query for total events - video
+  SUM(IF(hits.eventInfo.eventCategory = 'video', 1,0)) AS videoEvents, 
+   # query for total events - NebulaCX
+  SUM(IF(hits.eventInfo.eventCategory = 'NebulaCX', 1,0)) AS NebulaCXEvents,
+  
   # query for total events - ecommerce impressions
   SUM(IF(REGEXP_MATCH(hits.eventInfo.eventCategory, r'ecommerce') AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
   # SUM(IF(hits.eventInfo.eventCategory LIKE '%ecommerce%' AND hits.eventInfo.eventAction = 'impression', 1, 0)) as EcommerceImpressionEvents,
